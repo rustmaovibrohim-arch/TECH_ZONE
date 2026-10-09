@@ -1,570 +1,867 @@
 
+"use strict";
+
+/* =========================================
+   ZOOR MARKET + ZOOR PLAY
+   Asosiy JavaScript
+========================================= */
+
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
+const money = (amount) =>
+    new Intl.NumberFormat("uz-UZ").format(amount) + " so‘m";
+
+function readStorage(key, fallback) {
+    try {
+        const saved = localStorage.getItem(key);
+        return saved === null ? fallback : JSON.parse(saved);
+    } catch {
+        return fallback;
+    }
+}
+
+function saveStorage(key, value) {
+    try {
+        localStorage.setItem(key, JSON.stringify(value));
+    } catch {
+        // Brauzer xotirasi mavjud bo'lmasa ham sahifa ishlashda davom etadi.
+    }
+}
+
+/* =========================================
+   MAHSULOTLAR
+========================================= */
+
 const products = [
-    { id: 1, name: "Nova X Pro smartfon", category: "Telefon", price: 4299000, oldPrice: 4899000, rating: 4.9, badge: "TOP TANLOV", emoji: "📱", bg: "#eee8ff", popularity: 99 },
-    { id: 2, name: "AirBeat simsiz naushnik", category: "Audio", price: 549000, oldPrice: 699000, rating: 4.8, badge: "−21%", emoji: "🎧", bg: "#ffe9f1", popularity: 97 },
-    { id: 3, name: "UltraBook Air noutbuk", category: "Kompyuter", price: 7999000, oldPrice: 8999000, rating: 4.9, badge: "TOP TANLOV", emoji: "💻", bg: "#e5f2ff", popularity: 96 },
-    { id: 4, name: "Smart Watch aqlli soat", category: "Telefon", price: 899000, oldPrice: 1099000, rating: 4.7, badge: "−18%", emoji: "⌚", bg: "#e6f7ee", popularity: 94 },
-    { id: 5, name: "Minimal stol chirog‘i", category: "Uy", price: 289000, oldPrice: 0, rating: 4.6, badge: "YANGI", emoji: "💡", bg: "#fff0d9", popularity: 85 },
-    { id: 6, name: "Studio Bass audio kolonka", category: "Audio", price: 679000, oldPrice: 799000, rating: 4.8, badge: "−15%", emoji: "🔊", bg: "#f0eaff", popularity: 92 },
-    { id: 7, name: "Nova Pad planshet", category: "Telefon", price: 2399000, oldPrice: 2699000, rating: 4.7, badge: "−11%", emoji: "📲", bg: "#e5efff", popularity: 88 },
-    { id: 8, name: "Mexanik gaming klaviatura", category: "Kompyuter", price: 459000, oldPrice: 0, rating: 4.9, badge: "TOP TANLOV", emoji: "⌨️", bg: "#ffe8e3", popularity: 91 },
-    { id: 9, name: "Uy uchun mini namlagich", category: "Uy", price: 199000, oldPrice: 249000, rating: 4.5, badge: "−20%", emoji: "💧", bg: "#e6f6ff", popularity: 78 },
-    { id: 10, name: "Ergonomik simsiz sichqoncha", category: "Kompyuter", price: 179000, oldPrice: 0, rating: 4.6, badge: "YANGI", emoji: "🖱️", bg: "#f2eaff", popularity: 82 },
-    { id: 11, name: "Premium mikrofon", category: "Audio", price: 749000, oldPrice: 899000, rating: 4.8, badge: "−17%", emoji: "🎙️", bg: "#ffe8f1", popularity: 86 },
-    { id: 12, name: "Aqlli uy kamerasi", category: "Uy", price: 389000, oldPrice: 459000, rating: 4.7, badge: "−15%", emoji: "📷", bg: "#e8f6e8", popularity: 81 }
+    {
+        id: 1,
+        title: "Apple iPhone 15, 128 GB",
+        brand: "Apple",
+        category: "Telefonlar",
+        price: 8999000,
+        oldPrice: 9999000,
+        rating: 4.9,
+        discount: 10,
+        image:
+            "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 2,
+        title: "Samsung Galaxy smartfon",
+        brand: "Samsung",
+        category: "Telefonlar",
+        price: 6499000,
+        oldPrice: 7299000,
+        rating: 4.8,
+        discount: 11,
+        image:
+            "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 3,
+        title: "Yengil va zamonaviy noutbuk",
+        brand: "Apple",
+        category: "Kompyuterlar",
+        price: 12999000,
+        oldPrice: 13999000,
+        rating: 4.9,
+        discount: 7,
+        image:
+            "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 4,
+        title: "Simsiz quloqchin, premium ovoz",
+        brand: "Sony",
+        category: "Quloqchinlar",
+        price: 499000,
+        oldPrice: 649000,
+        rating: 4.7,
+        discount: 23,
+        image:
+            "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 5,
+        title: "Aqlli qo‘l soati",
+        brand: "Samsung",
+        category: "Soatlar",
+        price: 799000,
+        oldPrice: 999000,
+        rating: 4.6,
+        discount: 20,
+        image:
+            "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 6,
+        title: "Simsiz musiqa quloqchini",
+        brand: "Sony",
+        category: "Quloqchinlar",
+        price: 359000,
+        oldPrice: 429000,
+        rating: 4.5,
+        discount: 16,
+        image:
+            "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 7,
+        title: "Kundalik foydalanish uchun noutbuk",
+        brand: "Apple",
+        category: "Kompyuterlar",
+        price: 8499000,
+        oldPrice: 9299000,
+        rating: 4.8,
+        discount: 9,
+        image:
+            "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 8,
+        title: "Zamonaviy uy aksessuari",
+        brand: "Xiaomi",
+        category: "Uy uchun",
+        price: 279000,
+        oldPrice: 329000,
+        rating: 4.4,
+        discount: 15,
+        image:
+            "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 9,
+        title: "Sport uchun aqlli soat",
+        brand: "Huawei",
+        category: "Soatlar",
+        price: 1099000,
+        oldPrice: 1299000,
+        rating: 4.7,
+        discount: 15,
+        image:
+            "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 10,
+        title: "Simsiz kompyuter sichqonchasi",
+        brand: "Logitech",
+        category: "Aksessuarlar",
+        price: 249000,
+        oldPrice: 299000,
+        rating: 4.6,
+        discount: 17,
+        image:
+            "https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 11,
+        title: "Telefon uchun zamonaviy aksessuar",
+        brand: "Xiaomi",
+        category: "Aksessuarlar",
+        price: 159000,
+        oldPrice: 199000,
+        rating: 4.3,
+        discount: 20,
+        image:
+            "https://images.unsplash.com/photo-1603313011101-320f26a4f6f6?auto=format&fit=crop&w=500&q=80"
+    },
+    {
+        id: 12,
+        title: "Uy va ish uchun qulay qurilma",
+        brand: "Huawei",
+        category: "Uy uchun",
+        price: 579000,
+        oldPrice: 699000,
+        rating: 4.5,
+        discount: 17,
+        image:
+            "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=500&q=80"
+    }
 ];
 
-const money = (number) => new Intl.NumberFormat("uz-UZ").format(number) + " so‘m";
+/* =========================================
+   HOLATLAR VA XOTIRA
+========================================= */
 
-let activeCategory = "Barchasi";
-let searchTerm = "";
-let showAll = false;
-let favorites = new Set();
-let cart = {};
-let toastTimer;
+let cart = readStorage("zoor_cart", []);
+let favorites = readStorage("zoor_favorites", []);
+let currentCategory = "Hammasi";
+let currentSearch = "";
+let currentBrand = "";
+let favoritesOnly = false;
+let toastTimeout;
 
-try {
-    favorites = new Set(JSON.parse(localStorage.getItem("nova-favorites") || "[]"));
-    cart = JSON.parse(localStorage.getItem("nova-cart") || "{}");
-} catch {
-    favorites = new Set();
-    cart = {};
+cart = Array.isArray(cart)
+    ? cart.filter(item =>
+        products.some(product => product.id === item.id) &&
+        Number.isInteger(item.quantity) &&
+        item.quantity > 0
+    )
+    : [];
+
+favorites = Array.isArray(favorites)
+    ? favorites.filter(id => products.some(product => product.id === id))
+    : [];
+
+/* =========================================
+   XABAR KO'RSATISH
+========================================= */
+
+function showToast(message) {
+    const toast = $("#toast");
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(toastTimeout);
+
+    toastTimeout = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2600);
 }
 
-function saveState() {
-    try {
-        localStorage.setItem("nova-favorites", JSON.stringify([...favorites]));
-        localStorage.setItem("nova-cart", JSON.stringify(cart));
-    } catch {
-        // Brauzer xotiraga yozishni bloklasa ham sahifa ishlayveradi.
-    }
-}
+/* =========================================
+   IKKI WEBSITE ORASIDA O'TISH
+========================================= */
 
-function toast(message) {
-    const el = $("#toast");
-    el.textContent = message;
-    el.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => el.classList.remove("show"), 2300);
-}
+function showPage(page) {
+    const isPlay = page === "play";
 
-function updateCounts() {
-    $("#favoriteCount").textContent = favorites.size;
-    $("#cartCount").textContent = Object.values(cart).reduce((sum, quantity) => sum + quantity, 0);
-}
+    $("#marketPage").classList.toggle("hidden", isPlay);
+    $("#playPage").classList.toggle("hidden", !isPlay);
 
-function getFilteredProducts() {
-    let list = products.filter(product => {
-        const matchesCategory = activeCategory === "Barchasi" || product.category === activeCategory;
-        const haystack = `${product.name} ${product.category}`.toLocaleLowerCase("uz");
-        const matchesSearch = haystack.includes(searchTerm.toLocaleLowerCase("uz"));
-        return matchesCategory && matchesSearch;
+    $$(".switch-btn").forEach(button => {
+        const active = button.dataset.page === page;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
     });
 
-    const sort = $("#sortSelect").value;
-    if (sort === "cheap") list.sort((a, b) => a.price - b.price);
-    if (sort === "expensive") list.sort((a, b) => b.price - a.price);
-    if (sort === "rating") list.sort((a, b) => b.rating - a.rating);
-    if (sort === "popular") list.sort((a, b) => b.popularity - a.popularity);
+    document.title = isPlay
+        ? "ZOOR Play — O'yna va ball to'pla!"
+        : "ZOOR Market — Xarid qilish oson!";
 
-    return list;
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
+$$("[data-page]").forEach(button => {
+    button.addEventListener("click", () => {
+        showPage(button.dataset.page);
+    });
+});
+
+$$("[data-open-page]").forEach(button => {
+    button.addEventListener("click", () => {
+        showPage(button.dataset.openPage);
+    });
+});
+
+/* =========================================
+   MAHSULOT KARTALARINI CHIQARISH
+========================================= */
 
 function renderProducts() {
-    const grid = $("#productGrid");
-    const empty = $("#emptyState");
-    const list = getFilteredProducts();
-    const visible = showAll ? list : list.slice(0, 8);
+    const grid = $("#productsGrid");
+    const emptyState = $("#emptyState");
 
-    grid.innerHTML = visible.map(product => {
-        const isFavorite = favorites.has(product.id);
-        const badgeClass = product.badge.includes("−") ? "sale" : "";
-        return `
-      <article class="product-card">
-        <div class="product-visual" style="--product-bg:${product.bg}">
-          <span class="product-badge ${badgeClass}">${product.badge}</span>
-          <button class="wish-btn ${isFavorite ? "active" : ""}"
-            data-favorite="${product.id}"
-            aria-label="${isFavorite ? "Sevimlilardan olib tashlash" : "Sevimlilarga qo‘shish"}"
-            aria-pressed="${isFavorite}">${isFavorite ? "♥" : "♡"}</button>
-          <span class="product-emoji" aria-hidden="true">${product.emoji}</span>
-        </div>
-        <div class="product-info">
-          <span class="product-category">${product.category}</span>
-          <h3 class="product-name">${product.name}</h3>
-          <div class="product-rating"><span>★</span> ${product.rating.toFixed(1)} <span style="color:#aaa4b9">· Xaridorlar tanlovi</span></div>
-          <div class="product-price-row">
-            <div>
-              <div class="product-price">${money(product.price)}</div>
-              ${product.oldPrice ? `<span class="product-old-price">${money(product.oldPrice)}</span>` : ""}
-            </div>
-            <button class="add-cart" data-add="${product.id}" aria-label="Savatchaga qo‘shish">+</button>
-          </div>
-        </div>
-      </article>`;
-    }).join("");
+    if (!grid || !emptyState) return;
 
-    empty.hidden = list.length > 0;
-    $("#showMoreBtn").hidden = list.length <= 8 || showAll;
-    if (list.length === 0) $("#showMoreBtn").hidden = true;
-    updateCounts();
-}
+    const query = currentSearch.toLocaleLowerCase("uz");
 
-function setCategory(category) {
-    activeCategory = category;
-    showAll = false;
+    const filtered = products.filter(product => {
+        const matchesCategory =
+            currentCategory === "Hammasi" ||
+            product.category === currentCategory;
 
-    $$(".filter-chip").forEach(button => {
-        button.classList.toggle("active", button.dataset.category === category);
+        const searchableText =
+            `${product.title} ${product.brand} ${product.category}`
+                .toLocaleLowerCase("uz");
+
+        const matchesSearch = searchableText.includes(query);
+
+        const matchesBrand =
+            !currentBrand || product.brand === currentBrand;
+
+        const matchesFavorites =
+            !favoritesOnly || favorites.includes(product.id);
+
+        return (
+            matchesCategory &&
+            matchesSearch &&
+            matchesBrand &&
+            matchesFavorites
+        );
     });
 
-    renderProducts();
-    $("#products").scrollIntoView({ behavior: "smooth", block: "start" });
-}
+    $("#productResultCount").textContent =
+        `${filtered.length} ta mahsulot`;
 
-function addToCart(id) {
-    cart[id] = (cart[id] || 0) + 1;
-    saveState();
-    updateCounts();
-    renderCart();
-    const product = products.find(item => item.id === id);
-    toast(`${product.name} savatchaga qo‘shildi ✓`);
-}
-
-function toggleFavorite(id) {
-    if (favorites.has(id)) {
-        favorites.delete(id);
-        toast("Sevimlilardan olib tashlandi");
+    if (favoritesOnly) {
+        $("#productsTitle").textContent = "♡ Sevimli mahsulotlar";
+    } else if (currentBrand) {
+        $("#productsTitle").textContent = `Brend: ${currentBrand}`;
+    } else if (currentSearch) {
+        $("#productsTitle").textContent = "🔎 Qidiruv natijalari";
+    } else if (currentCategory !== "Hammasi") {
+        $("#productsTitle").textContent = currentCategory;
     } else {
-        favorites.add(id);
-        toast("Sevimlilarga qo‘shildi ♥");
-    }
-    saveState();
-    renderProducts();
-}
-
-function renderCart() {
-    const drawerItems = $("#drawerItems");
-    const entries = Object.entries(cart).filter(([, quantity]) => quantity > 0);
-
-    if (entries.length === 0) {
-        drawerItems.innerHTML = `<div class="drawer-empty"><div style="font-size:35px;margin-bottom:12px">🛍️</div>Savatcha hozircha bo‘sh.<br>O‘zingga yoqqan mahsulotni tanla!</div>`;
-    } else {
-        drawerItems.innerHTML = entries.map(([id, quantity]) => {
-            const product = products.find(item => item.id === Number(id));
-            if (!product) return "";
-            return `<div class="drawer-item">
-        <div class="drawer-item-visual">${product.emoji}</div>
-        <div><strong>${product.name}</strong><small>${quantity} dona · ${money(product.price * quantity)}</small></div>
-        <button class="remove-item" data-remove="${id}" aria-label="Olib tashlash">×</button>
-      </div>`;
-        }).join("");
+        $("#productsTitle").textContent = "🔥 Mashhur mahsulotlar";
     }
 
-    const total = entries.reduce((sum, [id, quantity]) => {
-        const product = products.find(item => item.id === Number(id));
-        return sum + (product ? product.price * quantity : 0);
-    }, 0);
+    grid.innerHTML = "";
 
-    $("#cartTotal").textContent = money(total);
-    updateCounts();
-}
+    emptyState.classList.toggle("hidden", filtered.length > 0);
+    grid.classList.toggle("hidden", filtered.length === 0);
 
-function openDrawer() {
-    $("#cartDrawer").classList.add("open");
-    $("#drawerBackdrop").classList.add("open");
-    $("#cartDrawer").setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    renderCart();
-}
+    filtered.forEach(product => {
+        const isFavorite = favorites.includes(product.id);
 
-function closeDrawer() {
-    $("#cartDrawer").classList.remove("open");
-    $("#drawerBackdrop").classList.remove("open");
-    $("#cartDrawer").setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-}
+        const card = document.createElement("article");
+        card.className = "product-card";
 
-$("#searchForm").addEventListener("submit", event => {
-    event.preventDefault();
-    searchTerm = $("#searchInput").value.trim();
-    activeCategory = "Barchasi";
-    showAll = true;
-    $$(".filter-chip").forEach(button => {
-        button.classList.toggle("active", button.dataset.category === "Barchasi");
+        card.innerHTML = `
+      <div class="product-image-wrap">
+        <img
+          class="product-image"
+          src="${product.image}"
+          alt="${escapeHTML(product.title)}"
+          loading="lazy"
+        >
+
+        <span class="product-discount">-${product.discount}%</span>
+
+        <button
+          class="favorite-btn ${isFavorite ? "is-favorite" : ""}"
+          data-favorite-id="${product.id}"
+          aria-label="${isFavorite ? "Sevimlilardan olib tashlash" : "Sevimlilarga qo‘shish"}"
+          aria-pressed="${isFavorite}"
+        >${isFavorite ? "♥" : "♡"}</button>
+      </div>
+
+      <span class="product-category">${escapeHTML(product.category)}</span>
+      <h3 class="product-title">${escapeHTML(product.title)}</h3>
+
+      <div class="product-rating">
+        ★★★★★ <span>${product.rating.toFixed(1)}</span>
+      </div>
+
+      <div class="product-price-row">
+        <strong class="product-price">${money(product.price)}</strong>
+        <span class="product-old-price">${money(product.oldPrice)}</span>
+      </div>
+
+      <div class="product-card-bottom">
+        <button class="add-cart-btn" data-add-id="${product.id}">
+          🛒 Savatchaga
+        </button>
+      </div>
+    `;
+
+        const image = card.querySelector("img");
+
+        image.addEventListener("error", () => {
+            image.style.display = "none";
+            image.parentElement.style.background =
+                "linear-gradient(135deg,#f0eaff,#fff0f6)";
+            image.parentElement.insertAdjacentHTML(
+                "beforeend",
+                '<span style="font-size:52px" aria-label="Mahsulot">📦</span>'
+            );
+        }, { once: true });
+
+        grid.appendChild(card);
     });
+}
+
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, character => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+    })[character]);
+}
+
+/* =========================================
+   QIDIRUV
+========================================= */
+
+function performSearch() {
+    currentSearch = $("#searchInput").value.trim();
+    currentBrand = "";
+    favoritesOnly = false;
+
     renderProducts();
-    $("#products").scrollIntoView({ behavior: "smooth" });
+
+    $("#productsSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+}
+
+$("#searchButton").addEventListener("click", performSearch);
+
+$("#searchInput").addEventListener("keydown", event => {
+    if (event.key === "Enter") performSearch();
 });
 
 $("#searchInput").addEventListener("input", event => {
-    searchTerm = event.target.value.trim();
-    showAll = true;
-    renderProducts();
-});
-
-$$("[data-search]").forEach(button => {
-    button.addEventListener("click", () => {
-        $("#searchInput").value = button.dataset.search;
-        searchTerm = button.dataset.search;
-        showAll = true;
-        activeCategory = "Barchasi";
-        $$(".filter-chip").forEach(chip => chip.classList.toggle("active", chip.dataset.category === "Barchasi"));
+    if (event.target.value.trim() === "") {
+        currentSearch = "";
         renderProducts();
-        $("#products").scrollIntoView({ behavior: "smooth" });
-    });
+    }
 });
 
-$$(".filter-chip").forEach(button => {
-    button.addEventListener("click", () => setCategory(button.dataset.category));
-});
-
-$$(".category-card").forEach(button => {
-    button.addEventListener("click", () => setCategory(button.dataset.category));
-});
-
-$("#sortSelect").addEventListener("change", renderProducts);
-$("#showMoreBtn").addEventListener("click", () => {
-    showAll = true;
-    renderProducts();
-});
-$("#resetSearch").addEventListener("click", () => {
-    searchTerm = "";
-    activeCategory = "Barchasi";
-    showAll = false;
+$("#resetSearchButton").addEventListener("click", () => {
+    resetFilters();
     $("#searchInput").value = "";
-    $("#sortSelect").value = "popular";
-    $$(".filter-chip").forEach(button => button.classList.toggle("active", button.dataset.category === "Barchasi"));
     renderProducts();
-});
-$("#productGrid").addEventListener("click", event => {
-    const favoriteButton = event.target.closest("[data-favorite]");
-    const addButton = event.target.closest("[data-add]");
-    if (favoriteButton) toggleFavorite(Number(favoriteButton.dataset.favorite));
-    if (addButton) addToCart(Number(addButton.dataset.add));
 });
 
-$("#favoritesButton").addEventListener("click", () => {
-    if (favorites.size === 0) {
-        toast("Hali sevimlilarga mahsulot qo‘shmagansiz");
-        return;
-    }
-    searchTerm = "";
-    activeCategory = "Barchasi";
-    showAll = true;
-    renderProducts();
-    $$(".product-card").forEach(card => {
-        const button = card.querySelector("[data-favorite]");
-        if (button && !favorites.has(Number(button.dataset.favorite))) card.hidden = true;
+function resetFilters() {
+    currentCategory = "Hammasi";
+    currentSearch = "";
+    currentBrand = "";
+    favoritesOnly = false;
+
+    $$(".category").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.category === "Hammasi"
+        );
     });
-    $("#products").scrollIntoView({ behavior: "smooth" });
-    toast("Sevimli mahsulotlaringiz ko‘rsatildi ♥");
+}
+
+/* =========================================
+   KATEGORIYALAR
+========================================= */
+
+$$(".category").forEach(button => {
+    button.addEventListener("click", () => {
+        currentCategory = button.dataset.category;
+        currentBrand = "";
+        favoritesOnly = false;
+
+        $$(".category").forEach(category => {
+            category.classList.toggle("active", category === button);
+        });
+
+        renderProducts();
+    });
 });
 
-$("#cartButton").addEventListener("click", openDrawer);
-$("#closeDrawer").addEventListener("click", closeDrawer);
-$("#drawerBackdrop").addEventListener("click", closeDrawer);
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") closeDrawer();
+/* =========================================
+   BREND FILTRI
+========================================= */
+
+$$(".brand-card").forEach(button => {
+    button.addEventListener("click", () => {
+        currentBrand = button.dataset.brand;
+        currentCategory = "Hammasi";
+        currentSearch = "";
+        favoritesOnly = false;
+
+        $("#searchInput").value = "";
+
+        $$(".category").forEach(category => {
+            category.classList.toggle(
+                "active",
+                category.dataset.category === "Hammasi"
+            );
+        });
+
+        renderProducts();
+
+        $("#productsSection").scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    });
 });
 
-$("#drawerItems").addEventListener("click", event => {
-    const button = event.target.closest("[data-remove]");
-    if (!button) return;
-    delete cart[button.dataset.remove];
-    saveState();
+/* =========================================
+   SEVIMLILAR
+========================================= */
+
+function toggleFavorite(id) {
+    if (favorites.includes(id)) {
+        favorites = favorites.filter(favoriteId => favoriteId !== id);
+        showToast("Mahsulot sevimlilardan olib tashlandi.");
+    } else {
+        favorites.push(id);
+        showToast("♡ Sevimlilarga qo‘shildi!");
+    }
+
+    saveStorage("zoor_favorites", favorites);
+    updateFavoritesPanel();
+    renderProducts();
+}
+
+function updateFavoritesPanel() {
+    const text = $("#favoritesText");
+    const button = $("#showFavoritesButton");
+
+    text.textContent = favorites.length
+        ? `${favorites.length} ta mahsulot sevimlilarga saqlangan.`
+        : "Hali sevimli mahsulot yo‘q.";
+
+    button.textContent = favoritesOnly
+        ? "Barcha mahsulotlar →"
+        : "Sevimlilarni ko‘rish →";
+}
+
+$("#favoriteShortcut").addEventListener("click", () => {
+    favoritesOnly = !favoritesOnly;
+    currentCategory = "Hammasi";
+    currentSearch = "";
+    currentBrand = "";
+
+    $("#searchInput").value = "";
+
+    $$(".category").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.category === "Hammasi"
+        );
+    });
+
+    renderProducts();
+
+    $("#productsSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+});
+
+$("#showFavoritesButton").addEventListener("click", () => {
+    favoritesOnly = !favoritesOnly;
+    currentCategory = "Hammasi";
+    currentSearch = "";
+    currentBrand = "";
+
+    $("#searchInput").value = "";
+    renderProducts();
+    updateFavoritesPanel();
+
+    $("#productsSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+});
+
+/* =========================================
+   SAVATCHA
+========================================= */
+
+function addToCart(id) {
+    const existing = cart.find(item => item.id === id);
+
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ id, quantity: 1 });
+    }
+
+    saveStorage("zoor_cart", cart);
     renderCart();
-    toast("Mahsulot savatchadan olib tashlandi");
-});
 
-$("#checkoutBtn").addEventListener("click", () => {
-    if (Object.values(cart).reduce((sum, quantity) => sum + quantity, 0) === 0) {
-        toast("Avval savatchaga mahsulot qo‘shing");
+    const product = products.find(item => item.id === id);
+    showToast(`${product.title} savatchaga qo‘shildi!`);
+}
+
+function changeCartQuantity(id, change) {
+    const item = cart.find(cartItem => cartItem.id === id);
+
+    if (!item) return;
+
+    item.quantity += change;
+
+    if (item.quantity <= 0) {
+        cart = cart.filter(cartItem => cartItem.id !== id);
+    }
+
+    saveStorage("zoor_cart", cart);
+    renderCart();
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+
+    saveStorage("zoor_cart", cart);
+    renderCart();
+    showToast("Mahsulot savatchadan olib tashlandi.");
+}
+
+function renderCart() {
+    const cartItems = $("#cartItems");
+    const totalCount = cart.reduce(
+        (sum, item) => sum + item.quantity,
+        0
+    );
+
+    const totalPrice = cart.reduce((sum, item) => {
+        const product = products.find(p => p.id === item.id);
+        return sum + (product ? product.price * item.quantity : 0);
+    }, 0);
+
+    $("#cartCount").textContent = totalCount;
+    $("#cartPanelCount").textContent = `${totalCount} ta`;
+    $("#cartTotal").textContent = money(totalPrice);
+    $("#checkoutButton").disabled = totalCount === 0;
+
+    if (totalCount === 0) {
+        cartItems.innerHTML = `
+      <div class="cart-empty">
+        <span>🛍️</span>
+        <p>Savatchangiz hozircha bo‘sh.</p>
+      </div>
+    `;
         return;
     }
-    toast("Bu demo loyiha — haqiqiy buyurtma yuborilmaydi");
+
+    cartItems.innerHTML = "";
+
+    cart.forEach(item => {
+        const product = products.find(p => p.id === item.id);
+        if (!product) return;
+
+        const row = document.createElement("div");
+        row.className = "cart-item";
+
+        row.innerHTML = `
+      <img src="${product.image}" alt="${escapeHTML(product.title)}">
+
+      <div>
+        <div class="cart-item-name">${escapeHTML(product.title)}</div>
+        <div class="cart-item-price">${money(product.price * item.quantity)}</div>
+
+        <div class="cart-item-controls">
+          <button data-minus-id="${product.id}" aria-label="Kamaytirish">−</button>
+          <span>${item.quantity}</span>
+          <button data-plus-id="${product.id}" aria-label="Ko‘paytirish">+</button>
+          <button
+            class="remove-item"
+            data-remove-id="${product.id}"
+            aria-label="O‘chirish"
+          >×</button>
+        </div>
+      </div>
+    `;
+
+        const image = row.querySelector("img");
+        image.addEventListener("error", () => {
+            image.style.visibility = "hidden";
+        }, { once: true });
+
+        cartItems.appendChild(row);
+    });
+}
+
+$("#cartShortcut").addEventListener("click", () => {
+    $("#cartPanel").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
 });
 
-$("#catalogBtn").addEventListener("click", () => {
-    $("#categories").scrollIntoView({ behavior: "smooth" });
+$("#checkoutButton").addEventListener("click", () => {
+    if (!cart.length) {
+        showToast("Avval savatchaga mahsulot qo‘shing.");
+        return;
+    }
+
+    const total = cart.reduce((sum, item) => {
+        const product = products.find(p => p.id === item.id);
+        return sum + (product ? product.price * item.quantity : 0);
+    }, 0);
+
+    const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+    const confirmed = window.confirm(
+        `Demo buyurtma\n\n` +
+        `Mahsulotlar soni: ${count}\n` +
+        `Jami: ${money(total)}\n\n` +
+        `Bu demo sayt. Haqiqiy buyurtma yoki to‘lov amalga oshirilmaydi.\n\n` +
+        `Savatchani tozalaymizmi?`
+    );
+
+    if (confirmed) {
+        cart = [];
+        saveStorage("zoor_cart", cart);
+        renderCart();
+        showToast("Demo savatcha tozalandi!");
+    }
 });
 
-$("#newsletterForm").addEventListener("submit", event => {
-    event.preventDefault();
-    toast("Rahmat! Bu demo obuna formasi ✨");
-    $("#emailInput").value = "";
+/* =========================================
+   TUGMALAR UCHUN UMUMIY HODISALAR
+========================================= */
+
+document.addEventListener("click", event => {
+    const addButton = event.target.closest("[data-add-id]");
+    const favoriteButton = event.target.closest("[data-favorite-id]");
+    const plusButton = event.target.closest("[data-plus-id]");
+    const minusButton = event.target.closest("[data-minus-id]");
+    const removeButton = event.target.closest("[data-remove-id]");
+
+    if (addButton) {
+        addToCart(Number(addButton.dataset.addId));
+    }
+
+    if (favoriteButton) {
+        toggleFavorite(Number(favoriteButton.dataset.favoriteId));
+    }
+
+    if (plusButton) {
+        changeCartQuantity(Number(plusButton.dataset.plusId), 1);
+    }
+
+    if (minusButton) {
+        changeCartQuantity(Number(minusButton.dataset.minusId), -1);
+    }
+
+    if (removeButton) {
+        removeFromCart(Number(removeButton.dataset.removeId));
+    }
 });
 
-// NOVA PLAY — yulduz tutish o‘yini
-const canvas = $("#gameCanvas");
-const ctx = canvas.getContext("2d");
-const gameOverlay = $("#gameOverlay");
-const scoreElement = $("#gameScore");
-const bestElement = $("#bestScore");
-const timeElement = $("#gameTime");
+/* =========================================
+   HERO VA BONUS TUGMALARI
+========================================= */
 
-let running = false;
+$("#heroShopButton").addEventListener("click", () => {
+    $("#productsSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+});
+
+$("#bonusButton").addEventListener("click", () => {
+    showToast("ZOOR Bonus — demo loyiha funksiyasi.");
+});
+
+/* =========================================
+   ZOOR PLAY — O'YIN
+========================================= */
+
 let score = 0;
 let timeLeft = 30;
-let playerX = canvas.width / 2;
-let stars = [];
-let particles = [];
-let lastFrame = 0;
-let spawnClock = 0;
-let gameLoopId = 0;
-let countdownId = 0;
-let lastTimestamp = 0;
-let keys = new Set();
+let gameRunning = false;
+let gameInterval = null;
 
-let bestScore = 0;
-try {
-    bestScore = Number(localStorage.getItem("nova-best-score") || 0);
-} catch { }
-bestElement.textContent = bestScore;
+let bestScore = Number(readStorage("zoor_best_score", 0)) || 0;
 
-function drawBackground() {
-    const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-    gradient.addColorStop(0, "#30234e");
-    gradient.addColorStop(1, "#171326");
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+$("#bestScore").textContent = bestScore;
 
-    for (let i = 0; i < 38; i++) {
-        const x = (i * 137 + 31) % canvas.width;
-        const y = (i * 71 + 19) % canvas.height;
-        ctx.fillStyle = i % 4 === 0 ? "#a997ff" : "#ffffff55";
-        ctx.beginPath();
-        ctx.arc(x, y, i % 5 === 0 ? 1.8 : 1, 0, Math.PI * 2);
-        ctx.fill();
-    }
-
-    ctx.strokeStyle = "#ffffff0c";
-    ctx.lineWidth = 1;
-    for (let y = 45; y < canvas.height; y += 45) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
-        ctx.stroke();
-    }
-}
-
-function drawPlayer() {
-    const y = canvas.height - 44;
-
-    ctx.save();
-    ctx.shadowColor = "#a997ff";
-    ctx.shadowBlur = 20;
-    ctx.fillStyle = "#8c72ff";
-    ctx.beginPath();
-    ctx.roundRect(playerX - 32, y - 12, 64, 29, 12);
-    ctx.fill();
-
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = "#cfc5ff";
-    ctx.beginPath();
-    ctx.roundRect(playerX - 24, y - 18, 48, 13, 7);
-    ctx.fill();
-
-    ctx.font = "23px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("🧺", playerX, y + 6);
-    ctx.restore();
-}
-
-function drawStar(star) {
-    ctx.save();
-    ctx.translate(star.x, star.y);
-    ctx.rotate(star.spin);
-    ctx.shadowColor = "#ffe48a";
-    ctx.shadowBlur = 14;
-    ctx.fillStyle = star.color;
-    ctx.beginPath();
-
-    for (let i = 0; i < 10; i++) {
-        const radius = i % 2 === 0 ? star.size : star.size * 0.46;
-        const angle = -Math.PI / 2 + i * Math.PI / 5;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        if (i === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-    }
-
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
-}
-
-function drawParticles() {
-    particles.forEach(particle => {
-        ctx.globalAlpha = Math.max(0, particle.life / 25);
-        ctx.fillStyle = particle.color;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-}
-
-function createBurst(x, y) {
-    for (let i = 0; i < 12; i++) {
-        particles.push({
-            x, y,
-            vx: (Math.random() - 0.5) * 5,
-            vy: (Math.random() - 0.7) * 5,
-            life: 25,
-            size: 2 + Math.random() * 3,
-            color: ["#ffe48a", "#b8a5ff", "#ff9cc8", "#ffffff"][i % 4]
-        });
-    }
-}
-
-function updateGame(delta) {
-    const step = Math.min(delta / 16.67, 2);
-    const playerSpeed = 6 * step;
-
-    if (keys.has("ArrowLeft") || keys.has("a") || keys.has("A")) playerX -= playerSpeed;
-    if (keys.has("ArrowRight") || keys.has("d") || keys.has("D")) playerX += playerSpeed;
-    playerX = Math.max(35, Math.min(canvas.width - 35, playerX));
-
-    spawnClock += delta;
-    if (spawnClock > 650) {
-        spawnClock = 0;
-        stars.push({
-            x: 20 + Math.random() * (canvas.width - 40),
-            y: -15,
-            size: 8 + Math.random() * 7,
-            speed: 1.8 + Math.random() * 2.4,
-            spin: Math.random() * 6,
-            color: ["#ffe48a", "#c5b7ff", "#ff9fc7"][Math.floor(Math.random() * 3)]
-        });
-    }
-
-    stars.forEach(star => {
-        star.y += star.speed * step;
-        star.spin += 0.025 * step;
-    });
-
-    const basketY = canvas.height - 44;
-    stars = stars.filter(star => {
-        if (star.y > basketY - 20 && star.y < basketY + 20 &&
-            Math.abs(star.x - playerX) < 39) {
-            score += 1;
-            scoreElement.textContent = score;
-            createBurst(star.x, star.y);
-            return false;
-        }
-        return star.y < canvas.height + 20;
-    });
-
-    particles.forEach(particle => {
-        particle.x += particle.vx * step;
-        particle.y += particle.vy * step;
-        particle.life -= step;
-    });
-    particles = particles.filter(particle => particle.life > 0);
-}
-
-function renderGame(delta = 16) {
-    drawBackground();
-    stars.forEach(drawStar);
-    drawParticles();
-    drawPlayer();
-}
-
-function gameFrame(timestamp) {
-    if (!running) return;
-    const delta = lastTimestamp ? timestamp - lastTimestamp : 16;
-    lastTimestamp = timestamp;
-
-    updateGame(delta);
-    renderGame(delta);
-
-    gameLoopId = requestAnimationFrame(gameFrame);
-}
-
-function finishGame() {
-    running = false;
-    cancelAnimationFrame(gameLoopId);
-    clearInterval(countdownId);
-
-    if (score > bestScore) {
-        bestScore = score;
-        bestElement.textContent = bestScore;
-        try {
-            localStorage.setItem("nova-best-score", String(bestScore));
-        } catch { }
-    }
-
-    gameOverlay.classList.remove("hidden");
-    gameOverlay.innerHTML = `
-    <div class="overlay-icon">${score >= 15 ? "🏆" : "⭐"}</div>
-    <h3>O‘yin tugadi!</h3>
-    <p>Sen ${score} ta yulduz to‘plading.</p>
-    <button class="btn btn-light" id="overlayStart">Yana o‘ynash ↗</button>
-  `;
-    $("#overlayStart").addEventListener("click", startGame);
+function updateScore() {
+    $("#currentScore").textContent = score;
 }
 
 function startGame() {
-    cancelAnimationFrame(gameLoopId);
-    clearInterval(countdownId);
+    if (gameRunning) return;
+
+    clearInterval(gameInterval);
 
     score = 0;
     timeLeft = 30;
-    playerX = canvas.width / 2;
-    stars = [];
-    particles = [];
-    spawnClock = 0;
-    lastTimestamp = 0;
-    scoreElement.textContent = "0";
-    timeElement.textContent = "30 SEC";
-    running = true;
+    gameRunning = true;
 
-    gameOverlay.classList.add("hidden");
-    gameLoopId = requestAnimationFrame(gameFrame);
+    updateScore();
 
-    countdownId = setInterval(() => {
-        if (!running) return;
+    $("#gameTimer").textContent = timeLeft;
+    $("#gameMessage").classList.add("hidden");
+    $("#tapTarget").classList.remove("hidden");
+    $("#tapTarget").disabled = false;
+    $("#tapTarget").textContent = "BOS! ⚡";
+
+    $("#gameStartAgain").textContent = "↻ Qayta boshlash";
+
+    showToast("O‘yin boshlandi! Tezroq bos!");
+
+    gameInterval = setInterval(() => {
         timeLeft -= 1;
-        timeElement.textContent = `${timeLeft} SEC`;
-        if (timeLeft <= 0) finishGame();
+        $("#gameTimer").textContent = timeLeft;
+
+        if (timeLeft <= 0) {
+            finishGame();
+        }
     }, 1000);
 }
 
-function movePlayerToPointer(event) {
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    playerX = (event.clientX - rect.left) * scaleX;
-    playerX = Math.max(35, Math.min(canvas.width - 35, playerX));
+function finishGame() {
+    if (!gameRunning) return;
+
+    gameRunning = false;
+    clearInterval(gameInterval);
+    gameInterval = null;
+
+    $("#tapTarget").disabled = true;
+    $("#tapTarget").classList.add("hidden");
+    $("#gameMessage").classList.remove("hidden");
+
+    const isRecord = score > bestScore;
+
+    if (isRecord) {
+        bestScore = score;
+        saveStorage("zoor_best_score", bestScore);
+        $("#bestScore").textContent = bestScore;
+    }
+
+    $("#gameMessage").innerHTML = `
+    <span class="game-big-icon">${isRecord ? "🏆" : "🎮"}</span>
+    <h3>${isRecord ? "Yangi rekord!" : "O‘yin tugadi!"}</h3>
+    <p>Natijang: <strong>${score} ball</strong></p>
+    <p>${isRecord ? "Ajoyib! Eng yaxshi natijang yangilandi." : "Yana urinib, rekordingni yangila!"}</p>
+  `;
+
+    $("#gameStartAgain").textContent = "▶ Yana o‘ynash";
+
+    showToast(`O‘yin tugadi! Natija: ${score} ball.`);
 }
 
-canvas.addEventListener("pointerdown", event => {
-    movePlayerToPointer(event);
-    if (canvas.setPointerCapture) canvas.setPointerCapture(event.pointerId);
+$("#tapTarget").addEventListener("click", () => {
+    if (!gameRunning || timeLeft <= 0) return;
+
+    score += 1;
+    updateScore();
+
+    // Har bosishda kichik vizual o'zgarish.
+    $("#tapTarget").textContent =
+        score % 5 === 0 ? "ZO‘R! 🔥" : "BOS! ⚡";
 });
 
-canvas.addEventListener("pointermove", event => {
-    if (event.pointerType === "touch" || event.buttons === 1) {
-        movePlayerToPointer(event);
-    }
+$("#startGameButton").addEventListener("click", () => {
+    $("#gameSection");
+    startGame();
+
+    $("#gameBoard").scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
 });
 
-window.addEventListener("keydown", event => {
-    if (["ArrowLeft", "ArrowRight", " "].includes(event.key)) event.preventDefault();
-    keys.add(event.key);
-});
+$("#gameStartAgain").addEventListener("click", startGame);
 
-window.addEventListener("keyup", event => keys.delete(event.key));
-window.addEventListener("blur", () => keys.clear());
+/* =========================================
+   SAYTNI ISHGA TAYYORLASH
+========================================= */
 
-$("#startGame").addEventListener("click", startGame);
-$("#overlayStart").addEventListener("click", startGame);
+function initializeSite() {
+    renderProducts();
+    renderCart();
+    updateFavoritesPanel();
+    updateScore();
 
-drawBackground();
-drawPlayer();
-renderProducts();
-renderCart();
-updateCounts();
+    $("#bestScore").textContent = bestScore;
+
+    $$(".switch-btn").forEach(button => {
+        button.setAttribute(
+            "aria-pressed",
+            String(button.classList.contains("active"))
+        );
+    });
+}
+
+initializeSite();
