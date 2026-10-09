@@ -4,342 +4,428 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#6c35d9">
-
-    <title>ZOOR Market — Xarid qilish oson!</title>
-
+    <meta name="theme-color" content="#111020">
+    <meta name="description" content="ZOOR — zamonaviy xaridlar, top chegirmalar va ZOOR Play o‘yinlari.">
+    <title>ZOOR — Xaridlar yangi darajada</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="./main.css">
 </head>
 
 <body>
+    <div class="announcement-bar">
+        <p>✦ ZOOR olamiga xush kelibsiz — yangi imkoniyatlarni kashf eting!</p>
+        <a href="#deals">Aksiyalarni ko‘rish ↗</a>
+    </div>
 
-    <!-- UMUMIY YUQORI PANEL -->
-    <header class="topbar">
-        <a href="#" class="logo" onclick="showPage('market'); return false;">
-            <span class="logo-symbol">Z</span>
-            <span>ZOOR<span class="logo-light"> Market</span></span>
-        </a>
-
-        <div class="top-search">
-            <input type="search" id="searchInput" placeholder="Telefon, noutbuk yoki boshqa mahsulot...">
-            <button id="searchButton" aria-label="Qidirish">⌕</button>
+    <header class="site-header">
+        <div class="header-main container">
+            <a class="brand" href="#home"><span class="brand-symbol">Z</span><span>ZOOR<span
+                        class="brand-dot">.</span></span></a>
+            <nav class="main-nav" aria-label="Asosiy navigatsiya">
+                <a class="nav-link active" href="#home">Bosh sahifa</a>
+                <a class="nav-link" href="#categories">Kategoriyalar</a>
+                <a class="nav-link" href="#products">Mahsulotlar</a>
+                <a class="nav-link" href="#play">ZOOR Play <span class="new-tag">NEW</span></a>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-button" id="accountButton" aria-label="Profil">♙</button>
+                <button class="icon-button" id="favoritesButton" aria-label="Sevimlilar">♡</button>
+                <button class="cart-button" id="cartButton">🛍 <span>Savatcha</span> <span class="cart-count"
+                        id="cartCount">0</span></button>
+            </div>
         </div>
-
-        <div class="top-actions">
-            <button class="top-action" id="favoriteShortcut">
-                ♡ <span class="action-label">Sevimlilar</span>
-            </button>
-
-            <button class="top-action" id="cartShortcut">
-                🛒 <span class="action-label">Savatcha</span>
-                <span id="cartCount" class="count-badge">0</span>
-            </button>
+        <div class="search-row container">
+            <button class="catalog-button" id="catalogButton">☷ Katalog</button>
+            <form class="search-form" id="searchForm" role="search">
+                <span class="search-icon">⌕</span>
+                <input id="searchInput" type="search" placeholder="Nima qidiryapsiz? Telefon, kiyim, gadjet..."
+                    aria-label="Mahsulot qidirish">
+                <button type="submit">Qidirish →</button>
+            </form>
+            <div class="delivery-note"><span>⌖</span>
+                <div><small>Yetkazib berish</small><strong>O‘zbekiston bo‘ylab</strong></div>
+            </div>
+        </div>
+        <div class="category-strip container" id="categoryStrip">
+            <a href="#products" data-category="Elektronika">⚡ Elektronika</a>
+            <a href="#products" data-category="Moda">✦ Moda</a>
+            <a href="#products" data-category="Uy uchun">⌂ Uy uchun</a>
+            <a href="#products" data-category="Sport">◈ Sport</a>
+            <a href="#products" data-category="Aksessuarlar">◇ Aksessuarlar</a>
+            <a href="#deals">🔥 Chegirmalar</a><a href="#play">🎮 O‘yinlar</a>
         </div>
     </header>
 
-    <!-- IKKI WEBSITE ORASIDA O'TISH -->
-    <nav class="site-switch">
-        <button class="switch-btn active" data-page="market">
-            🛍️ ZOOR Market
-        </button>
-        <button class="switch-btn" data-page="play">
-            🎮 ZOOR Play
-        </button>
-        <span class="switch-note">Bitta loyiha · Ikkita website</span>
-    </nav>
-
-    <!-- ======================================
-       1-WEBSITE: ZOOR MARKET
-  ======================================= -->
-    <main id="marketPage" class="site-page">
-
-        <div class="market-layout">
-
-            <!-- CHAP KATEGORIYALAR -->
-            <aside class="sidebar">
-                <div class="sidebar-heading">Kategoriyalar</div>
-
-                <button class="category active" data-category="Hammasi">
-                    <span>▦</span> Hammasi
-                </button>
-                <button class="category" data-category="Telefonlar">
-                    <span>📱</span> Telefonlar
-                </button>
-                <button class="category" data-category="Kompyuterlar">
-                    <span>💻</span> Kompyuterlar
-                </button>
-                <button class="category" data-category="Quloqchinlar">
-                    <span>🎧</span> Quloqchinlar
-                </button>
-                <button class="category" data-category="Soatlar">
-                    <span>⌚</span> Soatlar
-                </button>
-                <button class="category" data-category="Uy uchun">
-                    <span>🏠</span> Uy uchun
-                </button>
-                <button class="category" data-category="Aksessuarlar">
-                    <span>🎒</span> Aksessuarlar
-                </button>
-
-                <div class="sidebar-promo">
-                    <span>✨</span>
-                    <h3>ZOOR Bonus</h3>
-                    <p>Har bir xarid — yangi imkoniyat!</p>
-                    <button id="bonusButton">Batafsil →</button>
+    <main id="home">
+        <section class="hero container">
+            <div class="hero-copy">
+                <div class="eyebrow"><span class="eyebrow-dot"></span> YANGI AVLOD MARKETPLACE</div>
+                <h1>Xarid qilishning<br>yangi <span>darajasi.</span></h1>
+                <p>Sevimli mahsulotlaringiz, ajoyib narxlar va yangi kashfiyotlar — barchasi bitta ZOOR olamida.</p>
+                <div class="hero-actions">
+                    <a class="primary-button" href="#products">Xaridni boshlash <span>↗</span></a>
+                    <a class="secondary-button" href="#categories">Kategoriyalarni ko‘rish →</a>
                 </div>
-            </aside>
-
-            <!-- MARKAZIY QISM -->
-            <section class="market-content">
-
-                <div class="market-welcome">
-                    <div>
-                        <p class="eyebrow">ZOOR MARKETGA XUSH KELIBSIZ!</p>
-                        <h1>Yaxshi tanlov — <span>ZOOR tanlov!</span></h1>
-                        <p>Sevimli mahsulotlaringizni bir joydan toping.</p>
+                <div class="hero-proof">
+                    <div class="proof-avatars"><span>🧑🏻</span><span>👩🏽</span><span>🧑🏿</span><span>👩🏻</span>
                     </div>
-                    <div class="welcome-icon">🛍️</div>
-                </div>
-
-                <!-- HERO REKLAMA -->
-                <section class="hero-banner">
-                    <div class="hero-copy">
-                        <span class="hero-tag">HAFTANING TOP TAKLIFI</span>
-                        <h2>Yangi iPhone<br>sizni kutmoqda!</h2>
-                        <p>Zamonaviy texnologiya va ajoyib dizayn.</p>
-                        <button id="heroShopButton" class="primary-btn">
-                            Xarid qilish <span>→</span>
-                        </button>
-                    </div>
-
-                    <div class="hero-product">
-                        <div class="discount-bubble">−20%</div>
-                        <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?auto=format&fit=crop&w=600&q=85"
-                            alt="Zamonaviy smartfon">
-                    </div>
-
-                    <div class="hero-decoration decor-one"></div>
-                    <div class="hero-decoration decor-two"></div>
-                </section>
-
-                <!-- AFZALLIKLAR -->
-                <div class="benefits">
-                    <div class="benefit">
-                        <span class="benefit-icon">🚚</span>
-                        <div><strong>Tez yetkazish</strong><small>Qulay buyurtma</small></div>
-                    </div>
-                    <div class="benefit">
-                        <span class="benefit-icon">🛡️</span>
-                        <div><strong>Ishonchli xarid</strong><small>Sifatli mahsulotlar</small></div>
-                    </div>
-                    <div class="benefit">
-                        <span class="benefit-icon">💳</span>
-                        <div><strong>Oson to‘lov</strong><small>Qulay xarid jarayoni</small></div>
+                    <div><strong>Yangi imkoniyatlar har kuni</strong><small>O‘zingizga kerakli narsani toping</small>
                     </div>
                 </div>
+            </div>
+            <div class="hero-art">
+                <div class="hero-glow"></div>
+                <div class="floating-label label-top">✦ YANGI KOLLEKSIYA</div>
+                <div class="hero-orbit orbit-one"></div>
+                <div class="hero-orbit orbit-two"></div>
+                <img class="hero-product"
+                    src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=85"
+                    alt="Premium quloqchinlar">
+                <div class="floating-card hero-price"><span class="mini-icon">✦</span>
+                    <div><small>Haftaning tanlovi</small><strong>Top mahsulotlar</strong></div><span
+                        class="price-arrow">↗</span>
+                </div>
+                <div class="floating-card hero-discount"><strong>ZOOR</strong><span>O‘zingizga yoqqanini toping</span>
+                </div>
+                <div class="hero-index">01 <span>/</span> 04</div>
+            </div>
+        </section>
 
-                <!-- MAHSULOTLAR -->
-                <section class="products-section" id="productsSection">
-                    <div class="section-heading">
-                        <div>
-                            <p class="eyebrow">SIZ UCHUN TANLANDI</p>
-                            <h2 id="productsTitle">🔥 Mashhur mahsulotlar</h2>
+        <section class="benefit-bar container">
+            <div class="benefit"><span class="benefit-icon">↗</span>
+                <div><strong>Keng tanlov</strong><small>Turli kategoriyalar</small></div>
+            </div>
+            <div class="benefit"><span class="benefit-icon">✧</span>
+                <div><strong>Maxsus takliflar</strong><small>Yangi topilmalar</small></div>
+            </div>
+            <div class="benefit"><span class="benefit-icon">♡</span>
+                <div><strong>Sevimlilaringiz</strong><small>Oson saqlab qo‘ying</small></div>
+            </div>
+            <div class="benefit"><span class="benefit-icon">◉</span>
+                <div><strong>Qulay xarid</strong><small>Oddiy va tushunarli</small></div>
+            </div>
+        </section>
+
+        <section class="section container" id="categories">
+            <div class="section-heading">
+                <div><span class="section-kicker">O‘ZINGIZGA MOSINI TOPING</span>
+                    <h2>Ommabop kategoriyalar<span class="heading-dot">.</span></h2>
+                    <p>Qiziqishingizga mos olamni tanlang.</p>
+                </div><a class="text-link" href="#products">Barchasini ko‘rish →</a>
+            </div>
+            <div class="category-grid">
+                <a class="category-card category-tech" href="#products" data-category="Elektronika">
+                    <div class="category-card-copy"><span class="category-number">01 / TECH</span>
+                        <h3>Elektronika</h3>
+                        <p>Texnologiya olami ↗</p>
+                    </div><img
+                        src="https://images.unsplash.com/photo-1498049794561-7780e7231661?auto=format&fit=crop&w=600&q=80"
+                        alt="Elektronika" loading="lazy">
+                </a>
+                <a class="category-card category-fashion" href="#products" data-category="Moda">
+                    <div class="category-card-copy"><span class="category-number">02 / STYLE</span>
+                        <h3>Moda</h3>
+                        <p>Uslubingni yarat ↗</p>
+                    </div><img
+                        src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80"
+                        alt="Moda" loading="lazy">
+                </a>
+                <a class="category-card category-home" href="#products" data-category="Uy uchun">
+                    <div class="category-card-copy"><span class="category-number">03 / LIVING</span>
+                        <h3>Uy uchun</h3>
+                        <p>Qulaylik shu yerdan ↗</p>
+                    </div><img
+                        src="https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?auto=format&fit=crop&w=600&q=80"
+                        alt="Uy buyumlari" loading="lazy">
+                </a>
+                <a class="category-card category-sport" href="#products" data-category="Sport">
+                    <div class="category-card-copy"><span class="category-number">04 / ACTIVE</span>
+                        <h3>Sport</h3>
+                        <p>Harakatni boshlang ↗</p>
+                    </div><img
+                        src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80"
+                        alt="Sport" loading="lazy">
+                </a>
+            </div>
+        </section>
+
+        <section class="deal-banner container" id="deals">
+            <div class="deal-copy"><span class="deal-kicker">ZOOR TANLOVI · MAXSUS BO‘LIM</span>
+                <h2>Yaxshi topilmalar.<br><span>Ajoyib imkoniyatlar.</span></h2>
+                <p>Tanlangan mahsulotlarni ko‘rib chiqing va o‘zingizga mosini toping.</p><a href="#products"
+                    class="deal-button">Top mahsulotlarni ko‘rish ↗</a>
+            </div>
+            <div class="deal-art">
+                <div class="deal-ring"></div><img
+                    src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=85"
+                    alt="Zamonaviy krossovka" loading="lazy"><span
+                    class="deal-sticker">ZOOR<br><small>SELECT</small></span>
+            </div>
+        </section>
+
+        <section class="section container" id="products">
+            <div class="section-heading product-heading">
+                <div><span class="section-kicker">SIZ UCHUN SARALANDI</span>
+                    <h2>Trenddagi mahsulotlar<span class="heading-dot">.</span></h2>
+                    <p>Hozir ko‘rib chiqishga arziydigan tanlovlar.</p>
+                </div>
+                <div class="product-tabs"><button class="filter-tab active"
+                        data-filter="Barchasi">Barchasi</button><button class="filter-tab"
+                        data-filter="Elektronika">Elektronika</button><button class="filter-tab"
+                        data-filter="Moda">Moda</button><button class="filter-tab" data-filter="Uy uchun">Uy
+                        uchun</button></div>
+            </div>
+            <div class="results-line"><span id="resultsCount">Saralangan mahsulotlar</span><label
+                    for="sortSelect">Saralash <select id="sortSelect">
+                        <option value="featured">Tavsiya etilgan</option>
+                        <option value="price-asc">Narx: arzonidan</option>
+                        <option value="price-desc">Narx: qimmatidan</option>
+                    </select></label></div>
+            <div class="product-grid" id="productGrid">
+                <article class="product-card" data-id="headphones" data-category="Elektronika" data-price="589000"
+                    data-name="Premium simsiz quloqchin">
+                    <div class="product-image"><span class="product-badge badge-dark">TOP TANLOV</span><button
+                            class="favorite-toggle" aria-label="Sevimlilarga qo‘shish">♡</button><img
+                            src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=650&q=80"
+                            alt="Premium quloqchinlar" loading="lazy"><button class="quick-add" data-add="headphones">＋
+                            Savatchaga</button></div>
+                    <div class="product-info"><span class="product-category">ELEKTRONIKA</span>
+                        <h3>Premium simsiz quloqchin</h3>
+                        <div class="product-rating"><span>★★★★★</span> <small>(128)</small></div>
+                        <div class="product-bottom">
+                            <div><strong>589 000 so‘m</strong><small class="old-price">699 000 so‘m</small></div><button
+                                class="add-button" data-add="headphones" aria-label="Savatchaga qo‘shish">＋</button>
                         </div>
-                        <span id="productResultCount" class="result-count"></span>
                     </div>
-
-                    <div id="productsGrid" class="products-grid">
-                        <!-- Mahsulotlarni JavaScript chiqaradi -->
-                    </div>
-
-                    <div id="emptyState" class="empty-state hidden">
-                        <span>🔎</span>
-                        <h3>Mahsulot topilmadi</h3>
-                        <p>Boshqa nom bilan qidirib ko‘ring.</p>
-                        <button class="primary-btn" id="resetSearchButton">
-                            Barcha mahsulotlar
-                        </button>
-                    </div>
-                </section>
-
-                <!-- BRENDLAR -->
-                <section class="brands-section">
-                    <div class="section-heading">
-                        <div>
-                            <p class="eyebrow">MASHHUR ISHLAB CHIQARUVCHILAR</p>
-                            <h2>Ommabop brendlar</h2>
+                </article>
+                <article class="product-card" data-id="sneakers" data-category="Moda" data-price="749000"
+                    data-name="Urban Street krossovka">
+                    <div class="product-image"><span class="product-badge badge-violet">YANGI</span><button
+                            class="favorite-toggle" aria-label="Sevimlilarga qo‘shish">♡</button><img
+                            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=650&q=80"
+                            alt="Qizil krossovka" loading="lazy"><button class="quick-add" data-add="sneakers">＋
+                            Savatchaga</button></div>
+                    <div class="product-info"><span class="product-category">MODA</span>
+                        <h3>Urban Street krossovka</h3>
+                        <div class="product-rating"><span>★★★★★</span> <small>(96)</small></div>
+                        <div class="product-bottom">
+                            <div><strong>749 000 so‘m</strong><small class="old-price">890 000 so‘m</small></div><button
+                                class="add-button" data-add="sneakers" aria-label="Savatchaga qo‘shish">＋</button>
                         </div>
                     </div>
-
-                    <div class="brands-grid">
-                        <button class="brand-card" data-brand="Apple">Apple</button>
-                        <button class="brand-card" data-brand="Samsung">Samsung</button>
-                        <button class="brand-card" data-brand="Xiaomi">Xiaomi</button>
-                        <button class="brand-card" data-brand="Logitech">Logitech</button>
-                        <button class="brand-card" data-brand="Sony">Sony</button>
-                        <button class="brand-card" data-brand="Huawei">Huawei</button>
-                    </div>
-                </section>
-
-                <!-- 2-WEBSITEGA O'TISH BANNERI -->
-                <section class="play-promo">
-                    <div>
-                        <span class="eyebrow">XARIDDAN TASHQARI HAM QIZIQ!</span>
-                        <h2>🎮 ZOOR Play olamiga kiring</h2>
-                        <p>Mini-o‘yin o‘ynang, ball to‘plang va rekordingizni yangilang.</p>
-                    </div>
-                    <button class="primary-btn" data-open-page="play">
-                        O‘yinni boshlash →
-                    </button>
-                </section>
-
-                <footer class="site-footer">
-                    <a href="#" class="footer-logo" data-open-page="market">ZOOR Market</a>
-                    <p>© 2026 ZOOR — demo loyiha.</p>
-                    <span>HTML · CSS · JavaScript</span>
-                </footer>
-
-            </section>
-
-            <!-- O'NG SAVATCHA PANELI -->
-            <aside class="right-sidebar">
-
-                <section class="cart-panel" id="cartPanel">
-                    <div class="cart-panel-heading">
-                        <h2>🛒 Savatcha</h2>
-                        <span id="cartPanelCount">0 ta</span>
-                    </div>
-
-                    <div id="cartItems" class="cart-items">
-                        <div class="cart-empty">
-                            <span>🛍️</span>
-                            <p>Savatchangiz hozircha bo‘sh.</p>
+                </article>
+                <article class="product-card" data-id="watch" data-category="Elektronika" data-price="1129000"
+                    data-name="Minimalist aqlli soat">
+                    <div class="product-image"><span class="product-badge badge-green">TREND</span><button
+                            class="favorite-toggle" aria-label="Sevimlilarga qo‘shish">♡</button><img
+                            src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=650&q=80"
+                            alt="Qo‘l soati" loading="lazy"><button class="quick-add" data-add="watch">＋
+                            Savatchaga</button></div>
+                    <div class="product-info"><span class="product-category">ELEKTRONIKA</span>
+                        <h3>Minimalist aqlli soat</h3>
+                        <div class="product-rating"><span>★★★★★</span> <small>(74)</small></div>
+                        <div class="product-bottom">
+                            <div><strong>1 129 000 so‘m</strong><small class="old-price">1 290 000 so‘m</small></div>
+                            <button class="add-button" data-add="watch" aria-label="Savatchaga qo‘shish">＋</button>
                         </div>
                     </div>
-
-                    <div class="cart-total">
-                        <span>Jami summa</span>
-                        <strong id="cartTotal">0 so‘m</strong>
+                </article>
+                <article class="product-card" data-id="bag" data-category="Moda" data-price="429000"
+                    data-name="Everyday dizayner sumkasi">
+                    <div class="product-image"><span class="product-badge">TANLOV</span><button class="favorite-toggle"
+                            aria-label="Sevimlilarga qo‘shish">♡</button><img
+                            src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&w=650&q=80"
+                            alt="Dizayner sumkasi" loading="lazy"><button class="quick-add" data-add="bag">＋
+                            Savatchaga</button></div>
+                    <div class="product-info"><span class="product-category">MODA</span>
+                        <h3>Everyday dizayner sumkasi</h3>
+                        <div class="product-rating"><span>★★★★★</span> <small>(53)</small></div>
+                        <div class="product-bottom">
+                            <div><strong>429 000 so‘m</strong><small class="old-price">499 000 so‘m</small></div><button
+                                class="add-button" data-add="bag" aria-label="Savatchaga qo‘shish">＋</button>
+                        </div>
                     </div>
+                </article>
+                <article class="product-card" data-id="speaker" data-category="Elektronika" data-price="369000"
+                    data-name="Portativ Bluetooth kolonka">
+                    <div class="product-image"><span class="product-badge badge-dark">MASHHUR</span><button
+                            class="favorite-toggle" aria-label="Sevimlilarga qo‘shish">♡</button><img
+                            src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=650&q=80"
+                            alt="Bluetooth kolonka" loading="lazy"><button class="quick-add" data-add="speaker">＋
+                            Savatchaga</button></div>
+                    <div class="product-info"><span class="product-category">ELEKTRONIKA</span>
+                        <h3>Portativ Bluetooth kolonka</h3>
+                        <div class="product-rating"><span>★★★★★</span> <small>(81)</small></div>
+                        <div class="product-bottom">
+                            <div><strong>369 000 so‘m</strong><small class="old-price">419 000 so‘m</small></div><button
+                                class="add-button" data-add="speaker" aria-label="Savatchaga qo‘shish">＋</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card" data-id="lamp" data-category="Uy uchun" data-price="249000"
+                    data-name="Modern stol chirog‘i">
+                    <div class="product-image"><span class="product-badge badge-violet">YANGI</span><button
+                            class="favorite-toggle" aria-label="Sevimlilarga qo‘shish">♡</button><img
+                            src="https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=650&q=80"
+                            alt="Stol chirog‘i" loading="lazy"><button class="quick-add" data-add="lamp">＋
+                            Savatchaga</button></div>
+                    <div class="product-info"><span class="product-category">UY UCHUN</span>
+                        <h3>Modern stol chirog‘i</h3>
+                        <div class="product-rating"><span>★★★★★</span> <small>(42)</small></div>
+                        <div class="product-bottom">
+                            <div><strong>249 000 so‘m</strong><small class="old-price">299 000 so‘m</small></div><button
+                                class="add-button" data-add="lamp" aria-label="Savatchaga qo‘shish">＋</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card" data-id="backpack" data-category="Moda" data-price="319000"
+                    data-name="Daily premium ryukzak">
+                    <div class="product-image"><button class="favorite-toggle"
+                            aria-label="Sevimlilarga qo‘shish">♡</button><img
+                            src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=650&q=80"
+                            alt="Premium ryukzak" loading="lazy"><button class="quick-add" data-add="backpack">＋
+                            Savatchaga</button></div>
+                    <div class="product-info"><span class="product-category">MODA</span>
+                        <h3>Daily premium ryukzak</h3>
+                        <div class="product-rating"><span>★★★★★</span> <small>(37)</small></div>
+                        <div class="product-bottom">
+                            <div><strong>319 000 so‘m</strong><small class="old-price">359 000 so‘m</small></div><button
+                                class="add-button" data-add="backpack" aria-label="Savatchaga qo‘shish">＋</button>
+                        </div>
+                    </div>
+                </article>
+                <article class="product-card" data-id="chair" data-category="Uy uchun" data-price="899000"
+                    data-name="Comfort lounge kreslo">
+                    <div class="product-image"><span class="product-badge badge-green">TOP</span><button
+                            class="favorite-toggle" aria-label="Sevimlilarga qo‘shish">♡</button><img
+                            src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=650&q=80"
+                            alt="Zamonaviy mebel" loading="lazy"><button class="quick-add" data-add="chair">＋
+                            Savatchaga</button></div>
+                    <div class="product-info"><span class="product-category">UY UCHUN</span>
+                        <h3>Comfort lounge kreslo</h3>
+                        <div class="product-rating"><span>★★★★★</span> <small>(29)</small></div>
+                        <div class="product-bottom">
+                            <div><strong>899 000 so‘m</strong><small class="old-price">999 000 so‘m</small></div><button
+                                class="add-button" data-add="chair" aria-label="Savatchaga qo‘shish">＋</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <p class="empty-state" id="emptyState" hidden>Bu qidiruv bo‘yicha mahsulot topilmadi. Boshqa so‘z bilan
+                urinib ko‘ring.</p>
+            <div class="center-action"><button class="outline-button" id="showAllButton">Ko‘proq mahsulotlar ↓</button>
+            </div>
+        </section>
 
-                    <button id="checkoutButton" class="checkout-btn">
-                        Buyurtmani rasmiylashtirish →
-                    </button>
-                    <p class="demo-note">Demo: haqiqiy to‘lov amalga oshirilmaydi.</p>
-                </section>
+        <section class="play-section" id="play">
+            <div class="play-inner container">
+                <div class="play-copy"><span class="play-kicker">✦ ZOOR EKOTIZIMI</span>
+                    <h2>Xaridlar orasida<br><span>o‘ynab ham oling.</span></h2>
+                    <p>ZOOR Play — mini-o‘yinlar, yangi rekordlar va quvnoq tanaffuslar uchun alohida olam.</p>
+                    <div class="play-features"><span>🎮 Mini-o‘yinlar</span><span>🏆 Rekordlar</span><span>✨ Yangi
+                            bosqichlar</span></div><button class="play-button" id="openPlayButton">ZOOR Play olamiga
+                        kirish ↗</button>
+                </div>
+                <div class="play-visual">
+                    <div class="play-circle circle-back"></div>
+                    <div class="play-circle circle-front"></div>
+                    <div class="game-tile tile-one">🎮<small>PLAY</small></div>
+                    <div class="game-tile tile-two">🚀<small>ARCADE</small></div>
+                    <div class="game-tile tile-three">⭐<small>LEVEL UP</small></div>
+                    <div class="play-orb">Z<span>!</span></div>
+                    <div class="play-spark spark-one">✦</div>
+                    <div class="play-spark spark-two">✧</div>
+                </div>
+            </div>
+        </section>
 
-                <section class="side-promo">
-                    <span class="side-promo-icon">🎁</span>
-                    <p class="eyebrow">MAXSUS TAKLIF</p>
-                    <h3>Yangi xaridlar — yangi taassurotlar</h3>
-                    <p>O‘zingizga yoqqan mahsulotni toping.</p>
-                    <button data-open-page="market" class="text-btn">
-                        Ko‘rish →
-                    </button>
-                </section>
+        <section class="section container newsletter-section">
+            <div class="newsletter-card">
+                <div><span class="section-kicker">ZOOR BILAN BIRINCHI BO‘LING</span>
+                    <h2>Yangiliklar sizga yoqadi<span class="heading-dot">.</span></h2>
+                    <p>Yangi mahsulotlar va maxsus takliflardan xabardor bo‘ling.</p>
+                </div>
+                <form id="newsletterForm" class="newsletter-form"><label class="visually-hidden"
+                        for="newsletterEmail">Elektron pochta</label><input id="newsletterEmail" type="email"
+                        placeholder="Email manzilingiz" required><button type="submit">Obuna bo‘lish ↗</button></form>
+                <div class="newsletter-decoration">Z.</div>
+            </div>
+        </section>
+    </main>
 
-                <section class="favorites-panel" id="favoritesPanel">
-                    <h3>♡ Sevimlilar</h3>
-                    <p id="favoritesText">Hali sevimli mahsulot yo‘q.</p>
-                    <button id="showFavoritesButton" class="text-btn">
-                        Sevimlilarni ko‘rish →
-                    </button>
-                </section>
-
-            </aside>
-
+    <footer class="site-footer" id="footer">
+        <div class="container footer-main">
+            <div class="footer-brand"><a class="brand footer-logo" href="#home"><span
+                        class="brand-symbol">Z</span><span>ZOOR<span class="brand-dot">.</span></span></a>
+                <p>Xaridlar, ilhom va o‘yinlar —<br>barchasi bitta olamda.</p>
+                <div class="social-links"><a href="#footer">ig</a><a href="#footer">tg</a><a href="#footer">yt</a></div>
+            </div>
+            <div class="footer-column">
+                <h3>ZOOR Market</h3><a href="#categories">Kategoriyalar</a><a href="#products">Mahsulotlar</a><a
+                    href="#deals">Maxsus tanlovlar</a><a href="#products">Yangi mahsulotlar</a>
+            </div>
+            <div class="footer-column">
+                <h3>ZOOR olami</h3><a href="#play">ZOOR Play</a><a href="#play">Mini-o‘yinlar</a><a
+                    href="#play">Rekordlar</a><a href="#home">Biz haqimizda</a>
+            </div>
+            <div class="footer-column">
+                <h3>Yordam</h3><a href="#footer">Aloqa</a><a href="#footer">Yetkazib berish</a><a
+                    href="#footer">Qaytarish qoidalari</a><a href="#footer">Ko‘p so‘raladigan savollar</a>
+            </div>
         </div>
-    </main>
+        <div class="footer-bottom container"><span>© 2026 ZOOR. Barcha huquqlar himoyalangan.</span><span>Yangi avlod
+                xaridlari ♥ bilan</span></div>
+    </footer>
 
-    <!-- ======================================
-       2-WEBSITE: ZOOR PLAY
-  ======================================= -->
-    <main id="playPage" class="site-page hidden">
-
-        <section class="play-hero">
-            <div class="play-hero-content">
-                <span class="play-label">ZOOR ENTERTAINMENT</span>
-                <h1>ZOOR <span>PLAY</span></h1>
-                <p>O‘yna. Ball to‘pla. O‘z rekordingni yangila!</p>
-                <button id="startGameButton" class="play-start-btn">
-                    🎮 O‘yinni boshlash
-                </button>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Savatcha" aria-hidden="true">
+        <div class="drawer-header">
+            <div><span class="section-kicker">SIZNING TANLOVINGIZ</span>
+                <h2>Savatcha <span id="drawerCount">(0)</span></h2>
+            </div><button id="closeCartButton" class="icon-button" aria-label="Savatchani yopish">×</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty"><span>🛍</span>
+                <h3>Savatchangiz hozircha bo‘sh</h3>
+                <p>Yoqtirgan mahsulotlaringizni shu yerga qo‘shing.</p>
             </div>
-            <div class="play-hero-art">🎮</div>
-            <div class="play-orb orb-a"></div>
-            <div class="play-orb orb-b"></div>
-        </section>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Jami</span><strong id="cartTotal">0 so‘m</strong></div><button
+                id="checkoutButton" class="primary-button checkout-button">Buyurtmani davom ettirish →</button>
+            <p>Bu demo savatcha. Haqiqiy buyurtma uchun server integratsiyasi kerak.</p>
+        </div>
+    </aside>
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
 
-        <section class="play-stats">
-            <div class="stat-card">
-                <span>🏆</span>
-                <div><small>Eng yaxshi natija</small><strong id="bestScore">0</strong></div>
-            </div>
-            <div class="stat-card">
-                <span>⭐</span>
-                <div><small>Joriy ball</small><strong id="currentScore">0</strong></div>
-            </div>
-            <div class="stat-card">
-                <span>🎯</span>
-                <div><small>O‘yin turi</small><strong>Tezkor bosish</strong></div>
-            </div>
-        </section>
+    <section class="play-modal" id="playModal" role="dialog" aria-modal="true" aria-labelledby="playModalTitle"
+        aria-hidden="true">
+        <div class="play-modal-card"><button class="modal-close" id="closePlayButton"
+                aria-label="Yopish">×</button><span class="play-kicker">WELCOME TO ZOOR PLAY</span>
+            <h2 id="playModalTitle">Qaysi o‘yinni tanlaysiz?</h2>
+            <p>O‘yinlar bo‘limi keyingi bosqichda to‘liq ishlaydigan mini-o‘yinlar bilan to‘ldiriladi.</p>
+            <div class="game-options"><button class="game-option" data-game="memory"><span>🧠</span><strong>Memory
+                        Match</strong><small>Xotirangizni sinang</small></button><button class="game-option"
+                    data-game="reaction"><span>⚡</span><strong>Quick Reaction</strong><small>Tezligingizni
+                        tekshiring</small></button><button class="game-option"
+                    data-game="puzzle"><span>🧩</span><strong>Color Puzzle</strong><small>Mantiqiy
+                        jumboqlar</small></button></div>
+            <div class="game-status" id="gameStatus" aria-live="polite">O‘yinni tanlang — davom etamiz!</div>
+        </div>
+    </section>
 
-        <section class="game-section">
-            <div class="game-heading">
-                <div>
-                    <p class="eyebrow">MINI GAME</p>
-                    <h2>⚡ Tezkor bosish</h2>
-                    <p>30 soniya ichida imkon qadar ko‘p marta tugmani bos!</p>
-                </div>
-                <div class="timer-display">
-                    <span>⏱</span>
-                    <strong id="gameTimer">30</strong>
-                    <small>soniya</small>
-                </div>
-            </div>
-
-            <div class="game-board" id="gameBoard">
-                <div class="game-message" id="gameMessage">
-                    <span class="game-big-icon">🚀</span>
-                    <h3>Tayyormisan?</h3>
-                    <p>Start tugmasini bos va o‘yinni boshlagin.</p>
-                </div>
-
-                <button id="tapTarget" class="tap-target hidden" disabled>
-                    BOS! ⚡
-                </button>
-            </div>
-
-            <div class="game-controls">
-                <button id="gameStartAgain" class="primary-btn">
-                    ▶ Start
-                </button>
-                <span>Natijang shu brauzerda saqlanadi.</span>
-            </div>
-        </section>
-
-        <section class="play-bottom">
-            <div>
-                <span class="play-bottom-icon">🛍️</span>
-                <h2>ZOOR Market ham shu yerda!</h2>
-                <p>O‘yindan so‘ng do‘konga qaytib, mahsulotlarni ko‘rishing mumkin.</p>
-            </div>
-            <button class="primary-btn" data-open-page="market">
-                Marketga qaytish →
-            </button>
-        </section>
-
-        <footer class="site-footer play-footer">
-            <a href="#" class="footer-logo" data-open-page="play">ZOOR Play</a>
-            <p>© 2026 ZOOR — demo loyiha.</p>
-            <span>O‘yin-kulgi uchun yaratilgan.</span>
-        </footer>
-
-    </main>
-
-    <!-- XABARLAR UCHUN -->
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <div class="account-modal" id="accountModal" role="dialog" aria-modal="true" aria-hidden="true"
+        aria-labelledby="accountTitle">
+        <div class="account-card"><button class="modal-close" id="closeAccountButton"
+                aria-label="Yopish">×</button><span class="section-kicker">ZOOR ACCOUNT</span>
+            <h2 id="accountTitle">Xush kelibsiz!</h2>
+            <p>Profil va buyurtmalar boshqaruvi keyingi bosqichda ulanadi.</p><button class="primary-button"
+                id="accountOkButton">Tushunarli</button>
+        </div>
+    </div>
     <script src="./main.js"></script>
 </body>
 
